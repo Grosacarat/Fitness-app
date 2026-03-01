@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Pro Elite</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+
+    <style>
+        :root {
+            --bg: #0f0f0f;
+            --card: #1c1c1c;
+            --text: #ffffff;
+            --accent: #ff2e63;
+            --muted: #aaaaaa;
+        }
+
+        body.light {
+            --bg: #f4f6f9;
+            --card: #ffffff;
+            --text: #111111;
+            --accent: #ff2e63;
+            --muted: #666666;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            transition: 0.3s;
+        }
+
+        .app {
+            width: 100%;
+            max-width: 520px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .theme-toggle {
+            cursor: pointer;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: var(--accent);
+            color: white;
+            border: none;
+        }
+
+        .tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .tab {
+            padding: 10px;
+            text-align: center;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            background: rgba(0, 0, 0, 0.05);
+            font-size: 14px;
+        }
+
+        body.light .tab {
+            background: #f0f0f0;
+        }
+
+        .tab.active {
+            background: var(--accent);
+            color: white;
+            font-weight: 600;
+        }
+
+        .progress-container {
+            height: 8px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--accent);
+            transition: 0.3s;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        tr {
+            transition: 0.3s;
+        }
+
+        tr.checked {
+            opacity: 0.4;
+        }
+
+        td {
+            padding: 8px 0;
+            font-size: 14px;
+        }
+
+        td:first-child {
+            width: 30px;
+        }
+
+        input[type="checkbox"] {
+            transform: scale(1.2);
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+
+        .timer {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .timer-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            background: var(--accent);
+            color: white;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        .reset {
+            width: 100%;
+            margin-top: 15px;
+            background: var(--muted);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app">
+        <h1>Workout Pro Elite</h1>
+
+        <div class="card">
+            <div class="top-bar">
+                <div class="timer" id="time">00:00</div>
+                <button class="theme-toggle" onclick="toggleTheme()">🌗 Mode</button>
+            </div>
+
+            <div class="timer-buttons">
+                <button onclick="startTimer()">Start</button>
+                <button onclick="resetTimer()">Reset</button>
+            </div>
+        </div>
+
+        <div class="card">
+
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('performance',this)">Performance</div>
+                <div class="tab" onclick="switchTab('recovery',this)">Recovery</div>
+                <div class="tab" onclick="switchTab('upper',this)">Upper Focus</div>
+                <div class="tab" onclick="switchTab('lower',this)">Lower Focus</div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar" id="progress"></div>
+            </div>
+
+            <div id="workout"></div>
+
+            <button class="reset" onclick="resetWorkout()">Reset Session</button>
+
+        </div>
+    </div>
+
+    <script>
+
+        const workouts = {
+
+            performance: [
+                ["Push-ups", 10], ["Grip 0kg", 100], ["Push-ups", 10], ["Grip 0kg", 100],
+                ["Squats", 30], ["Grip 5kg", 80], ["Squats", 30], ["Grip 5kg", 80],
+                ["Push-ups", 10], ["Grip 10kg", 30], ["Squats", 30], ["Grip 20kg", 15],
+            ],
+
+            recovery: [
+                ["Push-ups", 5], ["Grip 0kg", 200],
+                ["Squats", 15], ["Grip 5kg", 120],
+                ["Push-ups", 5], ["Grip 10kg", 60],
+                ["Squats", 15], ["Grip 20kg", 30],
+            ],
+
+            upper: [
+                ["Push-ups", 16],
+                ["Grip 5kg", 120],
+                ["Biceps Curl", 30],
+                ["Hammer Curl", 30],
+
+                ["Push-ups", 16],
+                ["Grip 10kg", 60],
+                ["Biceps Curl", 24],
+                ["Hammer Curl", 24],
+
+                ["Push-ups", 16],
+                ["Grip 20kg", 20],
+
+                ["Biceps Curl", 20],
+                ["Hammer Curl", 20],
+                ["Push-ups", 20],
+            ],
+
+            lower: [
+                ["Squats", 20],
+                ["Lunges (each leg)", 15],
+                ["Wall Sit (sec)", 45],
+                ["Grip 5kg", 120],
+                ["Squats", 20],
+                ["Lunges (each leg)", 12],
+                ["Wall Sit (sec)", 60],
+                ["Grip 10kg", 60],
+            ]
+        };
+
+        let current = "performance";
+
+        /* RENDER */
+        function renderWorkout() {
+            let html = "<table>";
+            workouts[current].forEach((ex, i) => {
+                let checked = localStorage.getItem(current + i) === "true";
+                html += `
+<tr class="${checked ? 'checked' : ''}">
+<td><input type="checkbox" ${checked ? 'checked' : ''} onchange="save(${i},this)"></td>
+<td>${ex[0]}</td>
+<td style="text-align:right">${ex[1]}</td>
+</tr>`;
+            });
+            html += "</table>";
+            document.getElementById("workout").innerHTML = html;
+            updateProgress();
+        }
+
+        function save(i, el) {
+            localStorage.setItem(current + i, el.checked);
+            el.parentElement.parentElement.classList.toggle("checked", el.checked);
+            updateProgress();
+        }
+
+        function updateProgress() {
+            let boxes = document.querySelectorAll("#workout input");
+            let total = boxes.length;
+            let done = [...boxes].filter(b => b.checked).length;
+            document.getElementById("progress").style.width = (done / total) * 100 + "%";
+        }
+
+        function switchTab(tab, el) {
+            current = tab;
+            document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+            el.classList.add("active");
+            renderWorkout();
+        }
+
+        function resetWorkout() {
+            document.querySelectorAll("#workout input").forEach((box, i) => {
+                box.checked = false;
+                localStorage.setItem(current + i, false);
+                box.parentElement.parentElement.classList.remove("checked");
+            });
+            updateProgress();
+        }
+
+        /* THEME */
+        function toggleTheme() {
+            document.body.classList.toggle("light");
+            localStorage.setItem("theme", document.body.classList.contains("light") ? "light" : "dark");
+        }
+
+        if (localStorage.getItem("theme") === "light") {
+            document.body.classList.add("light");
+        }
+
+        /* TIMER */
+        let timer;
+        let seconds = 0;
+
+        function startTimer() {
+            if (timer) return;
+            timer = setInterval(() => {
+                seconds++;
+                let m = Math.floor(seconds / 60);
+                let s = seconds % 60;
+                document.getElementById("time").textContent =
+                    (m < 10 ? "0" : "") + m + ":" + (s < 10 ? "0" : "") + s;
+            }, 1000);
+        }
+
+        function resetTimer() {
+            clearInterval(timer);
+            timer = null;
+            seconds = 0;
+            document.getElementById("time").textContent = "00:00";
+        }
+
+        renderWorkout();
+    </script>
+
+</body>
+
+</html>
