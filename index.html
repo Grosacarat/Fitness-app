@@ -210,6 +210,7 @@
                 <div class="tab" onclick="switchTab('recovery',this)">Recovery</div>
                 <div class="tab" onclick="switchTab('upper',this)">Upper Focus</div>
                 <div class="tab" onclick="switchTab('lower',this)">Lower Focus</div>
+                <div class="tab" onclick="switchTab('dumbbell',this)">Dumbbell & Grip</div>
             </div>
 
             <div class="progress-container">
@@ -227,48 +228,116 @@
 
         const workouts = {
 
-            performance: [
-                ["Push-ups", 10], ["Grip 0kg", 100], ["Push-ups", 10], ["Grip 0kg", 100],
-                ["Squats", 30], ["Grip 5kg", 80], ["Squats", 30], ["Grip 5kg", 80],
-                ["Push-ups", 10], ["Grip 10kg", 30], ["Squats", 30], ["Grip 20kg", 15],
-            ],
+            performance:[
+                ["Push-ups",10],
+                ["Grip 0kg",100],
+                ["Push-ups",10],
+                ["Grip 0kg",100],
+                ["Squats",30],
+                ["Grip 5kg",80],
+                ["Squats",30],
+                ["Grip 5kg",80],
+                ["Push-ups",10],
+                ["Grip 5kg",60],
+                ["Push-ups",10],
+                ["Grip 5kg",60],
+                ["Squats",30],
+                ["Grip 10kg",30],
+                ["Squats",30],
+                ["Grip 10kg",30],
+                ["Push-ups",10],
+                ["Grip 20kg",15],
+                ["Push-ups",10],
+                ["Grip 20kg",15],
+                ["Squats",30],
+                ["Grip 0kg",20],
+                ["Squats",30],
+                ["Grip 0kg",100]
+                ],
 
-            recovery: [
-                ["Push-ups", 10], ["Grip 0kg", 200],
-                ["Squats", 20], ["Grip 5kg", 120],
-                ["Push-ups", 10], ["Grip 10kg", 60],
-                ["Squats", 20], ["Grip 20kg", 30],
-            ],
+            recovery:[
+                ["Push-ups",5],
+                ["Grip 0kg",100],
+                ["Push-ups",5],
+                ["Grip 0kg",100],
+                ["Squats",15],
+                ["Grip 5kg",80],
+                ["Squats",15],
+                ["Grip 5kg",80],
+                ["Push-ups",5],
+                ["Grip 5kg",60],
+                ["Push-ups",5],
+                ["Grip 5kg",60],
+                ["Squats",15],
+                ["Grip 10kg",30],
+                ["Squats",15],
+                ["Grip 10kg",30],
+                ["Push-ups",5],
+                ["Grip 20kg",15],
+                ["Push-ups",5],
+                ["Grip 20kg",15],
+                ["Squats",15],
+                ["Grip 0kg",20],
+                ["Squats",15],
+                ["Grip 0kg",100]
+                ],
 
-            upper: [
-                ["Push-ups", 16],
-                ["Grip 5kg", 120],
-                ["Biceps Curl", 30],
-                ["Hammer Curl", 30],
+            upper:[
+                ["Push-ups",16],
+                ["Rowing Haltère Un Bras",20],
+                ["Grip 5kg",120],
+                ["Curl Biceps",30],
+                ["Curl Marteau",30],
+                ["Développé Militaire Haltères",20],
+                
+                ["Push-ups",16],
+                ["Grip 10kg",60],
+                ["Curl Biceps",24],
+                ["Curl Marteau",24],
+                ["Élévations Latérales",20],
+                
+                ["Push-ups",16],
+                ["Grip 20kg",20],
+                ["Shrugs Haltères",30],
+                
+                ["Push-ups (Finisher)",20]
+                ],
 
-                ["Push-ups", 16],
-                ["Grip 10kg", 60],
-                ["Biceps Curl", 24],
-                ["Hammer Curl", 24],
+            lower:[
+                ["Squats avec Haltères",30],
+                ["Grip 5kg",80],
+                ["Fentes avec Haltères",20],
+                ["Chaise",45],
+                
+                ["Squats avec Haltères",30],
+                ["Grip 10kg",40],
+                ["Fentes avec Haltères",20],
+                ["Chaise",45],
+                
+                ["Squats",25],
+                ["Grip 20kg",20],
+                ["Fentes",20],
+                ["Chaise (Finisher)",60]
+                ],
 
-                ["Push-ups", 16],
-                ["Grip 20kg", 20],
-
-                ["Biceps Curl", 20],
-                ["Hammer Curl", 20],
-                ["Push-ups", 20],
-            ],
-
-            lower: [
-                ["Squats", 30],
-                ["Lunges (each leg)", 20],
-                ["Wall Sit (sec)", 45],
-                ["Grip 5kg", 120],
-                ["Squats", 30],
-                ["Lunges (each leg)", 15],
-                ["Wall Sit (sec)", 60],
-                ["Grip 10kg", 60],
-            ]
+            dumbbell:[
+                ["Rowing Haltère Un Bras",24],
+                ["Grip 5kg",100],
+                ["Développé Militaire Haltères",20],
+                ["Curl Biceps",30],
+                ["Curl Marteau",30],
+                
+                ["Élévations Latérales",24],
+                ["Grip 10kg",60],
+                ["Shrugs Haltères",40],
+                
+                ["Extension Nuque",24],
+                ["Curl Biceps",20],
+                ["Curl Marteau",20],
+                
+                ["Grip 20kg",20],
+                ["Shrugs Haltères (Finisher)",30]
+                ]
         };
 
         let current = "performance";
@@ -358,3 +427,4 @@
 
 
 </html>
+
